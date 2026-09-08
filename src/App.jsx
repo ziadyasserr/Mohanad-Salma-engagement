@@ -40,10 +40,10 @@ import music from "./assets/music.mp3";
    EASY-TO-REPLACE PLACEHOLDER DATA & IMAGES
    You can easily replace the URLs, names, and text here.
    ========================================================================== */
-const WEDDING_DATA = {
+const engagement_DATA = {
   groomName: "mohand",
   brideName: "Salma",
-  weddingDateISO: "2026-09-29T19:00:00",
+  engagementDateISO: "2026-09-29T19:00:00",
   formattedDate: "Tuesday, September 29, 2026",
   // venueName: "Police Officers Club",
   venueAddress: "Al Khalifa Al Kaher St, Nasr City, Cairo, Egypt",
@@ -97,7 +97,7 @@ const INITIAL_WISHES = [
   {
     id: 3,
     name: "Dr. Julian Vance",
-    message: "So thrilled for you both! mohand, you are a lucky man. Raising a toast to a magical wedding night!",
+    message: "So thrilled for you both! mohand, you are a lucky man. Raising a toast to a magical engagement night!",
     time: "1 day ago",
     likes: 9,
   },
@@ -121,7 +121,7 @@ export default function App() {
   // Guestbook State persisted in localStorage
   const [wishes, setWishes] = useState(() => {
     try {
-      const saved = localStorage.getItem("wedding_wishes");
+      const saved = localStorage.getItem("engagement_wishes");
       return saved ? JSON.parse(saved) : INITIAL_WISHES;
     } catch {
       return INITIAL_WISHES;
@@ -133,7 +133,7 @@ export default function App() {
   // Sync wishes state to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem("wedding_wishes", JSON.stringify(wishes));
+      localStorage.setItem("engagement_wishes", JSON.stringify(wishes));
     } catch (err) {
       console.error("Failed to save wishes to localStorage", err);
     }
@@ -164,11 +164,11 @@ export default function App() {
 
   // Calculate Countdown to Sept 29, 2026
   useEffect(() => {
-    const weddingTargetTime = new Date(WEDDING_DATA.weddingDateISO).getTime();
+    const engagementTargetTime = new Date(engagement_DATA.engagementDateISO).getTime();
 
     const updateTimer = () => {
       const now = new Date().getTime();
-      const difference = weddingTargetTime - now;
+      const difference = engagementTargetTime - now;
 
       if (difference > 0) {
         setTimeLeft({
@@ -317,7 +317,7 @@ export default function App() {
       id: Date.now(),
       name: newGuestName.trim(),
       message: newMessageText.trim(),
-      time: "Just now",
+      // time: "Just now",
       likes: 1,
     };
 
@@ -634,7 +634,7 @@ export default function App() {
               Salma
             </h1>
             <p className="font-cinzel text-xs sm:text-sm tracking-[0.35em] text-[#8c6a2b] uppercase font-semibold mt-6 sm:mt-8">
-              Invite you to celebrate their union
+              Invite you to celebrate their engagement
             </p>
           </div>
 
@@ -652,7 +652,7 @@ export default function App() {
             <div className="relative rounded-3xl overflow-hidden border-2 border-[#c5a059]/40 shadow-2xl bg-white/50">
               <img
                 src={msImg}
-                alt="mohand & Salma - Wedding Illustration"
+                alt="mohand & Salma - engagement Illustration"
                 className="w-full h-auto object-contain"
                 style={{ display: "block" }}
               />
@@ -664,13 +664,13 @@ export default function App() {
             <div className="absolute -bottom-2 -right-2 w-4 h-4 rounded-full bg-[#c5a059]/60" />
           </div>
 
-          {/* Wedding Date & Location */}
+          {/* engagement Date & Location */}
           <div className="mb-12">
             <p className="font-serif-cormorant text-3xl sm:text-5xl text-[#1a1918] font-normal tracking-wide">
               September 29, 2026
             </p>
             <p className="text-xs sm:text-sm text-[#6e675f] uppercase tracking-[0.2em] font-medium mt-2">
-              {WEDDING_DATA.venueName}
+              {engagement_DATA.venueName}
             </p>
           </div>
 
@@ -731,14 +731,14 @@ export default function App() {
               {/* Days 1 to 30 */}
               {[...Array(30)].map((_, index) => {
                 const dayNumber = index + 1;
-                const isWeddingDay = dayNumber === 29;
+                const isengagementDay = dayNumber === 29;
 
                 return (
                   <div key={dayNumber} className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center relative">
-                    {isWeddingDay ? (
+                    {isengagementDay ? (
                       <div
                         className="w-8 h-8 sm:w-9 sm:h-9 rounded-full gold-gradient-bg text-white font-bold text-base sm:text-lg shadow-lg border-2 border-white flex items-center justify-center relative scale-110 z-10 animate-pulse-slow"
-                        title="mohand & Salma's Wedding Day!"
+                        title="mohand & Salma's engagement Day!"
                       >
                         {dayNumber}
                         <span className="absolute -top-1.5 -right-1 text-[11px]">❤️</span>
@@ -777,7 +777,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto">
           <SectionHeader
             title="The Portrait Gallery"
-            subtitle="Moments captured in time as we prepare for our wedding day."
+            subtitle="Moments captured in time as we prepare for our engagement day."
           />
 
           {/* Main Slider Container */}
@@ -944,7 +944,7 @@ export default function App() {
       <section id="details" className="py-24 px-6 bg-[#f4efe6] border-y border-[#c5a059]/20">
         <div className="max-w-6xl mx-auto">
           <SectionHeader
-            title="Wedding Details & Location"
+            title="engagement Details & Location"
             subtitle="We look forward to welcoming you to an unforgettable evening."
           />
 
@@ -967,7 +967,7 @@ export default function App() {
                         Date
                       </h4>
                       <p className="text-gray-600 text-sm mt-1">
-                        {WEDDING_DATA.formattedDate}
+                        {engagement_DATA.formattedDate}
                       </p>
                     </div>
                   </div>
@@ -991,10 +991,10 @@ export default function App() {
                         Location
                       </h4>
                       <p className="text-gray-600 text-sm mt-1">
-                        {WEDDING_DATA.venueName}
+                        {engagement_DATA.venueName}
                       </p>
                       <p className="text-gray-400 text-xs mt-0.5">
-                        {WEDDING_DATA.venueAddress}
+                        {engagement_DATA.venueAddress}
                       </p>
                     </div>
                   </div>
@@ -1002,7 +1002,7 @@ export default function App() {
               </div>
 
               <a
-                href={WEDDING_DATA.googleMapsUrl}
+                href={engagement_DATA.googleMapsUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="mt-8 w-full py-4 rounded-2xl gold-gradient-bg text-white font-medium text-xs uppercase tracking-[0.2em] text-center flex items-center justify-center gap-2 shadow-md hover:brightness-105 transition"
