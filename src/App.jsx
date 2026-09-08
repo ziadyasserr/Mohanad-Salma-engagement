@@ -41,7 +41,7 @@ import music from "./assets/music.mp3";
    You can easily replace the URLs, names, and text here.
    ========================================================================== */
 const WEDDING_DATA = {
-  groomName: "Mohanad",
+  groomName: "mohand",
   brideName: "Salma",
   weddingDateISO: "2026-09-29T19:00:00",
   formattedDate: "Tuesday, September 29, 2026",
@@ -70,6 +70,12 @@ const GALLERY_IMAGES = [
     title: "Forever Begins",
     subtitle: "Counting down the days until September 29.",
   },
+  {
+    id: 4,
+    url: img1,
+    title: "Our world",
+    subtitle: "She draws, he falls.",
+  },
 ];
 
 // Initial Guestbook Messages
@@ -77,7 +83,7 @@ const INITIAL_WISHES = [
   {
     id: 1,
     name: "Alexander & Eleanor",
-    message: "Wishing Mohanad and Salma a lifetime of unconditional love, warmth, and endless joy! We cannot wait to celebrate with you both on September 29.",
+    message: "Wishing mohand and Salma a lifetime of unconditional love, warmth, and endless joy! We cannot wait to celebrate with you both on September 29.",
     time: "2 hours ago",
     likes: 14,
   },
@@ -91,7 +97,7 @@ const INITIAL_WISHES = [
   {
     id: 3,
     name: "Dr. Julian Vance",
-    message: "So thrilled for you both! Mohanad, you are a lucky man. Raising a toast to a magical wedding night!",
+    message: "So thrilled for you both! mohand, you are a lucky man. Raising a toast to a magical wedding night!",
     time: "1 day ago",
     likes: 9,
   },
@@ -294,7 +300,7 @@ export default function App() {
   if (introStage === "card") {
     const timer = setTimeout(() => {
       setIntroStage("dismissed");
-    }, 2000);
+    }, 2400);
 
     return () => clearTimeout(timer);
   }
@@ -386,7 +392,7 @@ export default function App() {
               You Are Cordially Invited
             </span>
             <h2 className="font-serif-cormorant text-4xl sm:text-6xl text-white font-light flex flex-col items-center justify-center leading-tight">
-              <span>Mohanad</span>
+              <span>mohand</span>
               <span className="text-[#c5a059] font-serif-playfair italic text-2xl sm:text-4xl my-1">&amp;</span>
               <span>Salma</span>
             </h2>
@@ -463,7 +469,7 @@ export default function App() {
             {/* Names */}
             <div className="mt-3 flex items-center gap-3"
               style={{ animation: "fadeSlideUp 0.5s ease 0.6s both" }}>
-              <span className="font-serif-cormorant text-2xl sm:text-3xl font-light text-white/80">Mohanad</span>
+              <span className="font-serif-cormorant text-2xl sm:text-3xl font-light text-white/80">mohand</span>
               <span className="font-serif-playfair italic text-[#c5a059] text-xl">&</span>
               <span className="font-serif-cormorant text-2xl sm:text-3xl font-light text-white/80">Salma</span>
             </div>
@@ -619,7 +625,7 @@ export default function App() {
           {/* Names Typography - Stacked Vertical Layout */}
           <div className=" flex flex-col items-center justify-center leading-none">
             <h1 className="font-serif-cormorant text-6xl sm:text-8xl md:text-9xl font-light tracking-tight text-[#1a1918]">
-              Mohanad
+              mohand
             </h1>
             <span className="font-serif-playfair italic text-[#c5a059] font-normal text-3xl sm:text-6xl md:text-7xl  sm:my-3">
               &amp;
@@ -646,7 +652,7 @@ export default function App() {
             <div className="relative rounded-3xl overflow-hidden border-2 border-[#c5a059]/40 shadow-2xl bg-white/50">
               <img
                 src={msImg}
-                alt="Mohanad & Salma - Wedding Illustration"
+                alt="mohand & Salma - Wedding Illustration"
                 className="w-full h-auto object-contain"
                 style={{ display: "block" }}
               />
@@ -732,7 +738,7 @@ export default function App() {
                     {isWeddingDay ? (
                       <div
                         className="w-8 h-8 sm:w-9 sm:h-9 rounded-full gold-gradient-bg text-white font-bold text-base sm:text-lg shadow-lg border-2 border-white flex items-center justify-center relative scale-110 z-10 animate-pulse-slow"
-                        title="Mohanad & Salma's Wedding Day!"
+                        title="mohand & Salma's Wedding Day!"
                       >
                         {dayNumber}
                         <span className="absolute -top-1.5 -right-1 text-[11px]">❤️</span>
@@ -911,7 +917,7 @@ export default function App() {
               <div className="relative h-[340px] sm:h-[420px] rounded-2xl overflow-hidden shadow-md border border-[#c5a059]/30">
                 <img
                   src={childrenImg}
-                  alt="Mohanad & Salma Childhood"
+                  alt="mohand & Salma Childhood"
                   className="w-full h-full object-cover object-center transition duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80" />
@@ -923,7 +929,7 @@ export default function App() {
               {/* Caption */}
               <div className="mt-6 text-center">
                 <h3 className="font-serif-cormorant text-3xl sm:text-4xl font-light text-[#1a1918]">
-                  Mohanad <span className="font-serif-playfair italic text-[#c5a059]">&amp;</span> Salma
+                  mohand <span className="font-serif-playfair italic text-[#c5a059]">&amp;</span> Salma
                 </h3>
                 <p className="text-[#6e675f] text-xs font-light mt-2 tracking-widest uppercase">
                   Pure innocence, timeless bond, infinite love
@@ -1051,7 +1057,7 @@ export default function App() {
             <ScheduleItem
               time="08:00 PM"
               title="Ceremony & Vows Exchange"
-              details="Mohanad & Salma exchange vows and celebrate their union."
+              details="mohand & Salma exchange vows and celebrate their union."
             />
             <ScheduleItem
               time="09:00 PM"
@@ -1072,7 +1078,7 @@ export default function App() {
         <div className="max-w-4xl mx-auto">
           <SectionHeader
             title="Words of Love & Wishes"
-            subtitle="Leave a personal message for Mohanad & Salma."
+            subtitle="Leave a personal message for mohand & Salma."
           />
 
           {/* Form */}
@@ -1168,7 +1174,7 @@ export default function App() {
       <footer className="py-20 gold-gradient-dark-bg text-white text-center border-t border-[#c5a059]/30">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="font-serif-cormorant text-5xl font-light gold-gradient-text tracking-tight">
-            Mohanad &amp; Salma
+            mohand &amp; Salma
           </h2>
 
           <p className="font-cinzel text-xs uppercase tracking-[0.35em] text-[#c5a059] mt-3">
