@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+:root {
+  --bg-ivory: #faf8f5;
+  --bg-beige: #f4efe6;
+  --champagne-gold: #c5a059;
+  --champagne-light: #e6d5b8;
+  --gold-accent: #d4af37;
+  --dark-charcoal: #1a1918;
+  --muted-text: #6e675f;
+  --border-gold: rgba(197, 160, 89, 0.25);
+}
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-ivory);
+  color: var(--dark-charcoal);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #faf8f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5a059;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a37f39;
+}
+
+/* Typography Classes */
+.font-serif-cormorant {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.font-serif-playfair {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.font-sans-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Custom Glass & Card Styling */
+.champagne-glass {
+  background: rgba(250, 248, 245, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.22);
+}
+
+.dark-glass {
+  background: rgba(26, 25, 24, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.3);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #a8813a 0%, #d4af37 50%, #8c6a2b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #c5a059 0%, #dfc48c 50%, #aa833d 100%);
+}
+
+.gold-gradient-dark-bg {
+  background: linear-gradient(135deg, #242220 0%, #1a1918 100%);
+}
+
+/* Subtle, Elegant Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-subtle-float {
+  animation: subtleFloat 6s ease-in-out infinite;
+}
+
+/* 3D Envelope Opening Animation Classes */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.envelope-top-flap {
+  transform-origin: top center;
+  transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.envelope-top-flap.open-flap {
+  transform: rotateX(-180deg);
+  z-index: 5;
+}
+
+.invitation-letter-card {
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.9s ease-in-out;
+}
+
+.invitation-letter-card.lift-card {
+  transform: translateY(-160px) scale(1.1);
+  z-index: 35;
+}
+
+@keyframes waxPulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.4), 0 0 30px rgba(197, 160, 89, 0.2);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 25px rgba(197, 160, 89, 0.8), 0 0 50px rgba(197, 160, 89, 0.5);
+  }
+}
+
+.animate-wax-pulse {
+  animation: waxPulseGlow 2.5s ease-in-out infinite;
+}
+
+/* Stage 3 Invitation Card Entrance & Exit Animations */
+@keyframes cardEnter {
+  0% {
+    opacity: 0;
+    transform: scale(0.82) translateY(30px);
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+@keyframes cardExit {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08) translateY(-20px);
+    filter: blur(10px);
+  }
+}
+
+.animate-card-enter {
+  animation: cardEnter 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-card-exit {
+  animation: cardExit 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ===== New Cinematic Card Animations ===== */
+
+@keyframes cardOverlayIn {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes cardContentIn {
+  0%   { opacity: 0; transform: translateY(24px) scale(0.97); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0) scale(1);     filter: blur(0); }
+}
+
+@keyframes lineGrow {
+  0%   { opacity: 0; transform: scaleY(0); }
+  100% { opacity: 1; transform: scaleY(1); }
+}
+
+@keyframes monogramIn {
+  0%   { opacity: 0; transform: scale(0.6); box-shadow: none; }
+  100% { opacity: 1; transform: scale(1);   }
+}
+
+@keyframes fadeSlideUp {
+  0%   { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+
