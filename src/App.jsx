@@ -34,6 +34,7 @@ import img3 from "./assets/img3.jpeg";
 import img4 from "./assets/img4.jpeg";
 import childrenImg from "./assets/children.jpeg";
 import msImg from "./assets/ms.png";
+import music from "./assets/music.mp3";
 
 /* ==========================================================================
    EASY-TO-REPLACE PLACEHOLDER DATA & IMAGES
@@ -198,56 +199,106 @@ export default function App() {
 
 
 
+  // const handleOpenEnvelope = () => {
+  //   if (introStage !== "envelope") return;
+  //   setIntroStage("opening");
+  //   // Start music on first user interaction
+  //   if (!musicStarted) {
+  //     setMusicStarted(true);
+  //     setIsPlaying(true);
+  //   }
+  // };
   const handleOpenEnvelope = () => {
     if (introStage !== "envelope") return;
+
     setIntroStage("opening");
-    // Start music on first user interaction
+
     if (!musicStarted) {
       setMusicStarted(true);
       setIsPlaying(true);
+
+      audioRef.current
+        ?.play()
+        .catch((error) => {
+          console.log("Music playback blocked:", error);
+          setIsPlaying(false);
+        });
     }
   };
 
-  const toggleMusic = () => {
-    if (ytPlayerRef.current) {
-      if (isPlaying) {
-        ytPlayerRef.current.contentWindow.postMessage(
-          JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
-          "*"
-        );
-        setIsPlaying(false);
-      } else {
-        ytPlayerRef.current.contentWindow.postMessage(
-          JSON.stringify({ event: "command", func: "playVideo", args: [] }),
-          "*"
-        );
-        setIsPlaying(true);
-      }
-    }
-  };
+  // const toggleMusic = () => {
+  //   if (ytPlayerRef.current) {
+  //     if (isPlaying) {
+  //       ytPlayerRef.current.contentWindow.postMessage(
+  //         JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+  //         "*"
+  //       );
+  //       setIsPlaying(false);
+  //     } else {
+  //       ytPlayerRef.current.contentWindow.postMessage(
+  //         JSON.stringify({ event: "command", func: "playVideo", args: [] }),
+  //         "*"
+  //       );
+  //       setIsPlaying(true);
+  //     }
+  //   }
+  // };
 
   // Automated 4-stage sequence transitions
-  useEffect(() => {
-    if (introStage === "envelope") {
-      const timer1 = setTimeout(() => {
-        handleOpenEnvelope();
-      }, 700);
-      return () => clearTimeout(timer1);
-    }
-    if (introStage === "opening") {
-      const timer2 = setTimeout(() => {
-        setIntroStage("card");
-      }, 1200);
-      return () => clearTimeout(timer2);
-    }
-    if (introStage === "card") {
-      const timer3 = setTimeout(() => {
-        setIntroStage("dismissed");
-      }, 2000);
-      return () => clearTimeout(timer3);
-    }
-  }, [introStage]);
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
 
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((error) => {
+          console.log("Music playback blocked:", error);
+        });
+    }
+  };
+
+  // useEffect(() => {
+  //   if (introStage === "envelope") {
+  //     const timer1 = setTimeout(() => {
+  //       handleOpenEnvelope();
+  //     }, 700);
+  //     return () => clearTimeout(timer1);
+  //   }
+  //   if (introStage === "opening") {
+  //     const timer2 = setTimeout(() => {
+  //       setIntroStage("card");
+  //     }, 1200);
+  //     return () => clearTimeout(timer2);
+  //   }
+  //   if (introStage === "card") {
+  //     const timer3 = setTimeout(() => {
+  //       setIntroStage("dismissed");
+  //     }, 2000);
+  //     return () => clearTimeout(timer3);
+  //   }
+  // }, [introStage]);
+
+  useEffect(() => {
+  if (introStage === "opening") {
+    const timer = setTimeout(() => {
+      setIntroStage("card");
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }
+
+  if (introStage === "card") {
+    const timer = setTimeout(() => {
+      setIntroStage("dismissed");
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }
+}, [introStage]);
   const handleReopenEnvelope = () => {
     setIntroStage("envelope");
   };
@@ -302,7 +353,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#faf8f5] text-[#1a1918] font-sans-inter selection:bg-[#c5a059] selection:text-white relative">
       {/* Background Audio - loads only after first user interaction */}
-      {musicStarted && (
+      {/* {musicStarted && (
         <iframe
           ref={ytPlayerRef}
           width="0"
@@ -312,14 +363,19 @@ export default function App() {
           style={{ display: "none", position: "absolute", pointerEvents: "none" }}
           title="background-music"
         ></iframe>
-      )}
+      )} */}
+      <audio
+        ref={audioRef}
+        src={music}
+        loop
+        preload="auto"
+      />
 
       {/* ================= STAGE 1 & 2: INTERACTIVE ENVELOPE OVERLAY ================= */}
       {(introStage === "envelope" || introStage === "opening") && (
         <div
-          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#141312]/95 backdrop-blur-xl transition-all duration-700 p-4 ${
-            introStage === "opening" ? "opacity-90" : "opacity-100"
-          }`}
+          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#141312]/95 backdrop-blur-xl transition-all duration-700 p-4 ${introStage === "opening" ? "opacity-90" : "opacity-100"
+            }`}
         >
           {/* Background Sparkle Radial Gradient */}
           <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(197,160,89,0.15)_0%,transparent_70%)]" />
@@ -353,17 +409,15 @@ export default function App() {
 
             {/* Top Flap (Flips 180deg) */}
             <div
-              className={`envelope-top-flap absolute top-0 left-0 right-0 h-1/2 bg-[#f5ebe0] border-b border-[#c5a059]/40 shadow-lg z-30 [clip-path:polygon(0_0,50%_100%,100%_0)] ${
-                introStage === "opening" ? "open-flap" : ""
-              }`}
+              className={`envelope-top-flap absolute top-0 left-0 right-0 h-1/2 bg-[#f5ebe0] border-b border-[#c5a059]/40 shadow-lg z-30 [clip-path:polygon(0_0,50%_100%,100%_0)] ${introStage === "opening" ? "open-flap" : ""
+                }`}
             />
 
             {/* Wax Seal */}
             <button
               onClick={handleOpenEnvelope}
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 w-16 h-16 sm:w-20 sm:h-20 rounded-full gold-gradient-bg border-2 border-white/90 flex flex-col items-center justify-center text-white shadow-2xl animate-wax-pulse transition-all duration-500 cursor-pointer ${
-                introStage === "opening" ? "scale-0 opacity-0" : "hover:scale-110"
-              }`}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 w-16 h-16 sm:w-20 sm:h-20 rounded-full gold-gradient-bg border-2 border-white/90 flex flex-col items-center justify-center text-white shadow-2xl animate-wax-pulse transition-all duration-500 cursor-pointer ${introStage === "opening" ? "scale-0 opacity-0" : "hover:scale-110"
+                }`}
             >
               <Sparkles className="w-4 h-4 text-white mb-0.5" />
               <span className="font-cinzel text-xs font-bold tracking-wider text-white">M &amp; S</span>
@@ -376,39 +430,39 @@ export default function App() {
       {introStage === "card" && (
         <div
           className="fixed inset-0 z-[110] flex items-center justify-center bg-[#0d0b09]/98 backdrop-blur-2xl"
-          style={{animation: "cardOverlayIn 0.5s ease forwards"}}
+          style={{ animation: "cardOverlayIn 0.5s ease forwards" }}
           onClick={() => setIntroStage("dismissed")}
         >
           {/* Ambient gold radial glows */}
-          <div className="absolute inset-0 pointer-events-none" style={{background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(197,160,89,0.12) 0%, transparent 70%)"}} />
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none" style={{background: "radial-gradient(circle, rgba(197,160,89,0.07) 0%, transparent 70%)", filter: "blur(40px)"}} />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full pointer-events-none" style={{background: "radial-gradient(circle, rgba(197,160,89,0.07) 0%, transparent 70%)", filter: "blur(40px)"}} />
+          <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(197,160,89,0.12) 0%, transparent 70%)" }} />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(197,160,89,0.07) 0%, transparent 70%)", filter: "blur(40px)" }} />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(197,160,89,0.07) 0%, transparent 70%)", filter: "blur(40px)" }} />
 
           {/* Card */}
           <div
             className="relative flex flex-col items-center justify-center text-center px-10 py-12"
-            style={{animation: "cardContentIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s both"}}
+            style={{ animation: "cardContentIn 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s both" }}
           >
             {/* Top thin gold line */}
-            <div style={{width: "1px", height: "60px", background: "linear-gradient(to bottom, transparent, #c5a059)", animation: "lineGrow 0.5s ease 0.2s both"}} />
+            <div style={{ width: "1px", height: "60px", background: "linear-gradient(to bottom, transparent, #c5a059)", animation: "lineGrow 0.5s ease 0.2s both" }} />
 
             {/* Monogram circle */}
             <div className="my-5 w-16 h-16 rounded-full border border-[#c5a059]/60 flex items-center justify-center"
-              style={{boxShadow: "0 0 30px rgba(197,160,89,0.3), inset 0 0 20px rgba(197,160,89,0.05)", animation: "monogramIn 0.5s ease 0.3s both"}}>
+              style={{ boxShadow: "0 0 30px rgba(197,160,89,0.3), inset 0 0 20px rgba(197,160,89,0.05)", animation: "monogramIn 0.5s ease 0.3s both" }}>
               <span className="font-cinzel text-lg font-bold tracking-widest gold-gradient-text">M&S</span>
             </div>
 
             {/* YOU ARE INVITED staggered */}
             <div className="flex flex-col items-center gap-1 my-4">
               <span className="font-cinzel text-[10px] uppercase tracking-[0.5em] text-[#c5a059]/70"
-                style={{animation: "fadeSlideUp 0.5s ease 0.35s both"}}>You Are</span>
+                style={{ animation: "fadeSlideUp 0.5s ease 0.35s both" }}>You Are</span>
               <span className="font-serif-cormorant text-7xl sm:text-8xl font-light text-white tracking-tight leading-none"
-                style={{animation: "fadeSlideUp 0.6s ease 0.45s both"}}>Invited</span>
+                style={{ animation: "fadeSlideUp 0.6s ease 0.45s both" }}>Invited</span>
             </div>
 
             {/* Names */}
             <div className="mt-3 flex items-center gap-3"
-              style={{animation: "fadeSlideUp 0.5s ease 0.6s both"}}>
+              style={{ animation: "fadeSlideUp 0.5s ease 0.6s both" }}>
               <span className="font-serif-cormorant text-2xl sm:text-3xl font-light text-white/80">Mohanad</span>
               <span className="font-serif-playfair italic text-[#c5a059] text-xl">&</span>
               <span className="font-serif-cormorant text-2xl sm:text-3xl font-light text-white/80">Salma</span>
@@ -416,10 +470,10 @@ export default function App() {
 
             {/* Date */}
             <p className="font-cinzel text-[10px] uppercase tracking-[0.4em] text-[#c5a059]/60 mt-3"
-              style={{animation: "fadeSlideUp 0.5s ease 0.7s both"}}>September 29 · 2026</p>
+              style={{ animation: "fadeSlideUp 0.5s ease 0.7s both" }}>September 29 · 2026</p>
 
             {/* Bottom thin gold line */}
-            <div className="mt-6" style={{width: "1px", height: "60px", background: "linear-gradient(to bottom, #c5a059, transparent)", animation: "lineGrow 0.5s ease 0.3s both"}} />
+            <div className="mt-6" style={{ width: "1px", height: "60px", background: "linear-gradient(to bottom, #c5a059, transparent)", animation: "lineGrow 0.5s ease 0.3s both" }} />
           </div>
         </div>
       )}
@@ -427,7 +481,7 @@ export default function App() {
       {/* ================= STICKY EDITORIAL NAVBAR ================= */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#faf8f5]/85 backdrop-blur-md border-b border-[#c5a059]/20 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-6 sm:px-10 h-20 flex items-center justify-between">
-          
+
           <div className="flex items-center gap-3">
             {/* Sound Toggle */}
             <button
@@ -552,7 +606,7 @@ export default function App() {
       >
         {/* Soft Warm Background */}
         <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#fdf6ec] via-[#faf8f5] to-[#faf8f5]" />
-        <div className="absolute inset-0 z-0 opacity-10" style={{backgroundImage: "radial-gradient(circle at 30% 20%, #c5a059 0%, transparent 50%), radial-gradient(circle at 70% 80%, #c5a059 0%, transparent 50%)"}} />
+        <div className="absolute inset-0 z-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle at 30% 20%, #c5a059 0%, transparent 50%), radial-gradient(circle at 70% 80%, #c5a059 0%, transparent 50%)" }} />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center animate-fade-in">
           {/* Top Invitation Badge */}
@@ -586,15 +640,15 @@ export default function App() {
           </div>
 
           {/* MS Couple Illustration - Hero Centerpiece */}
-          <div className="relative mx-auto mb-4" style={{maxWidth: "340px"}}>
+          <div className="relative mx-auto mb-4" style={{ maxWidth: "340px" }}>
             {/* Outer Glow Ring */}
-            <div className="absolute inset-0 rounded-3xl" style={{boxShadow: "0 0 60px 20px rgba(197,160,89,0.18), 0 0 120px 40px rgba(197,160,89,0.08)"}} />
+            <div className="absolute inset-0 rounded-3xl" style={{ boxShadow: "0 0 60px 20px rgba(197,160,89,0.18), 0 0 120px 40px rgba(197,160,89,0.08)" }} />
             <div className="relative rounded-3xl overflow-hidden border-2 border-[#c5a059]/40 shadow-2xl bg-white/50">
               <img
                 src={msImg}
                 alt="Mohanad & Salma - Wedding Illustration"
                 className="w-full h-auto object-contain"
-                style={{display: "block"}}
+                style={{ display: "block" }}
               />
             </div>
             {/* Corner Decorative Dots */}
@@ -696,7 +750,7 @@ export default function App() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-5 mt-10">
-            
+
 
             <a
               href="#details"
@@ -779,11 +833,10 @@ export default function App() {
               {/* Autoplay Toggle */}
               <button
                 onClick={() => setIsAutoplay(!isAutoplay)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium tracking-wider uppercase transition cursor-pointer ${
-                  isAutoplay
-                    ? "bg-[#c5a059]/15 text-[#8c6a2b] border border-[#c5a059]/40"
-                    : "bg-gray-200/70 text-gray-700 border border-gray-300"
-                }`}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium tracking-wider uppercase transition cursor-pointer ${isAutoplay
+                  ? "bg-[#c5a059]/15 text-[#8c6a2b] border border-[#c5a059]/40"
+                  : "bg-gray-200/70 text-gray-700 border border-gray-300"
+                  }`}
               >
                 {isAutoplay ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                 {isAutoplay ? "Autoplay Active" : "Play Slideshow"}
@@ -795,11 +848,10 @@ export default function App() {
                   <button
                     key={photo.id}
                     onClick={() => setCurrentIndex(index)}
-                    className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 transition-all duration-300 cursor-pointer ${
-                      currentIndex === index
-                        ? "ring-2 ring-[#c5a059] ring-offset-2 scale-105 shadow-md"
-                        : "opacity-50 hover:opacity-100 scale-95"
-                    }`}
+                    className={`relative w-16 h-16 rounded-xl overflow-hidden shrink-0 transition-all duration-300 cursor-pointer ${currentIndex === index
+                      ? "ring-2 ring-[#c5a059] ring-offset-2 scale-105 shadow-md"
+                      : "opacity-50 hover:opacity-100 scale-95"
+                      }`}
                   >
                     <img
                       src={photo.url}
